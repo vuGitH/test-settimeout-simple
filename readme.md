@@ -1,15 +1,15 @@
-# setTimeout() caveats or misunderstanding. What real timeout value is?
+# setTimeout() caveats or misunderstanding. What is real timeout value?
 
 ### Usage:
 
  - Copy content of file testSetTimout_simple.js
  - Paste it into REPL or browser console
  -  Type after console prompt: test( *delay*, *timeout* ), where
-    *delay* and *timeout* are digits with meanings:\
+    *delay* and *timeout* are integer arguments with meanings:\
     *timeout* - integer number of milliseconds similar to second argument
     of JavaScript setTimeout() function.\
     *delay* - presumable calculation time in milliseconds necessary to 
-    carry code in js-block following after the line where setTimeout() 
+    carry out code in js-block following after the line where setTimeout() 
     function is calling
     Example of test call: 
     ```
@@ -104,7 +104,7 @@ function test( delay, timeout ){
 }
 ```
 
-Table bellow illustrates testing result:
+Table bellow illustrates testing results:
 
 
 #### in node.js REPL
