@@ -8,22 +8,22 @@
     *delay* and *timeout* are integer arguments with meanings:\
     *timeout* - integer number of milliseconds similar to second argument
     of JavaScript setTimeout() function.\
-    *delay* - presumable calculation time in milliseconds necessary to 
-    carry out code in js-block following after the line where setTimeout() 
+    *delay* - presumable calculation time in milliseconds necessary to
+    carry out code in js-block following after the line where setTimeout()
     function is calling
-    Example of test call: 
+    Example of test call:
     ```
     test( 10, 500);
     ```
-    or 
+    or
     ```
     test(200, 5000 );
     ```
 See codes and printing output for details comprehension.
-    
-### Pretext: 
+
+### Pretext:
 I observed that effective timeout (lag of launching) of argument-function in
-standard JavaScript `setTimeout(fun, timeout)` depends on 
+standard JavaScript `setTimeout(fun, timeout)` depends on
 the time necessary to carry out calculation of codes following
 the line where `setTimeout()` resides, i.e.
 
@@ -32,7 +32,7 @@ By definition
 {
   // ...
   t0 = new Date();
-  var cleaner = setTimeout(fun,timeout);  
+  var cleaner = setTimeout(fun,timeout);
 ```
 means that function `fun` will be launched over approximately `timeout`
 milliseconds.
@@ -40,16 +40,16 @@ Suppose that after this statement we have a block consuming time
 for it's calculation, like this
 
 ```
- var t = 0, tw;  
-  while( t < delay ){    
+ var t = 0, tw;
+  while( t < delay ){
     tw = new Date();
     t = tw - t0;
   }
 ```
 
-'delay' milliseconds will be consumed by this. 
+'delay' milliseconds will be consumed by this.
 
-The effective *timeout* over which `fun` will begin to run will be equal to 
+The effective *timeout* over which `fun` will begin to run will be equal to
 `timeout` argument's value **only if** `timeout >= delay`
 
 **Otherwise** the `delay`'s value determines *effective timeout*.
@@ -58,49 +58,49 @@ Testing code used:
 
 ```
 var cleaner,
-    ob = { 
-      tf: undefined  //  fun's run beginning time      
-    }; 
-/** 
+    ob = {
+      tf: undefined  //  fun's run beginning time
+    };
+/**
  * setTimeout() function-argument
  */
 function fun(){
   var tf = new Date();
   ob.tf = tf.getTime();
-  
+
   console.log('in fun: tf = %s, (tf - t0) = %s',
       ob.tf,
       ob.tf - ob.t0);
- 
+
   clearTimeout(cleaner);
-}   
-/** 
- * test function 
- * @param {number} delay of process's flow in [milliseconds] 
- * @param {number} timeout value of setTimout()'s second argument 
+}
+/**
+ * test function
+ * @param {number} delay of process's flow in [milliseconds]
+ * @param {number} timeout value of setTimout()'s second argument
  */
 function test( delay, timeout ){
   console.log('test goes ...');
-  var tw,      
+  var tw,
       t0 = new Date();
   ob.t0 = t0.getTime();
-  
+
   cleaner = setTimeout(fun,timeout);
-  
-  var t = 0;  
+
+  var t = 0;
   while( t < delay ){    // process lag
     tw = new Date();
     t = tw - t0;
-  }  
+  }
   console.log('finish of test with\n' +
               'delay: %s\n' +
-              'timeout: %s\n' +  
+              'timeout: %s\n' +
               't0 = %s\n' +
-              'tw = %s\n' +                                   
+              'tw = %s\n' +
               't = %s',
               delay, timeout,
               t0.getTime(),tw.getTime(), t
-              );  
+              );
 }
 ```
 
